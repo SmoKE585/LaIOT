@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cm-focused {
+    outline: none !important;
+}
+
+.cm-editor {
+    border-radius: 3px;
+}
+
+.cm-gutters {
+    border-radius: 3px 0px 0px 3px;
+}
+
+input[disabled] {
+    background: #e3e3e3;
+    border: 1px solid #c7c7c7;
+}
+
+li.jstree-node {
+    border: 1px solid #d9d9d9;
+    margin-bottom: 5px;
+    padding: 5px 5px;
+    border-radius: 7px;
+}
+
+li.object-last-child {
+    margin-bottom: 15px;
+}
+
+li.jstree-node > .jstree-wholerow {
+    display: none;
+}
+
+
+ul.jstree-children {
+    padding: 10px;
+}
+
+.jstree-default .jstree-node {
+    margin-left: 0px!important;
+}
+
+.class > a.jstree-anchor {
+    font-size: 1.2rem;
+}
+
+i.jstree-themeicon-custom {
+    background-size: contain !important;
+    opacity: 0.2;
+}
+
+.class > .jstree-anchor>.jstree-themeicon {
+    margin: 10px!important;
+}
+
+.object > .jstree-anchor>.jstree-themeicon {
+    margin: 5px!important;
+    width: 20px!important;
+    align-items: center;
+}
+
+li.jstree-open i.jstree-themeicon-custom {
+    opacity: 1;
+}
+
+.jstree-default .jstree-anchor {
+     line-height: normal;
+}
+a.jstree-anchor {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: auto!important;
+}
+
+.jstree-default .jstree-leaf>.jstree-ocl {
+    display: none!important;
+}
+.jstree-default>.jstree-no-dots .jstree-open>.jstree-ocl {
+    display: none!important;
+}
+.jstree-default>.jstree-no-dots .jstree-closed>.jstree-ocl {
+    display: none;
+}
+.jstree-container-ul {
+    padding: 0px!important;
+    display: block!important;
+}
+li.empty-class {
+    opacity: .4;
+}
