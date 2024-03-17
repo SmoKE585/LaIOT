@@ -92,3 +92,27 @@ a.jstree-anchor {
 li.empty-class {
     opacity: .4;
 }
+.install_bg {
+    background-image: url('/backend/images/install_background.svg');
+    background-size: cover;
+    background-position: top center;
+}
+.choices__inner {
+    background-color: white!important;
+    --tw-border-opacity: 1;
+    border-color: rgb(226 232 240 / var(--tw-border-opacity))!important;
+    padding-top: 0.5rem!important;
+    padding-bottom: 0.5rem!important;
+    padding-left: 0.75rem!important;
+    padding-right: 0.75rem!important;
+    line-height: 1.25rem!important;
+    --tw-text-opacity: 1;
+    color: rgb(30 41 59 / var(--tw-text-opacity))!important;
+    --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)!important;
+    min-height: auto!important;
+}
+.choices__list--single {
+    padding: 0!important;
+}

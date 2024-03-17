@@ -30,6 +30,9 @@ import Clipboard from '@ryangjchandler/alpine-clipboard'
 
 import "line-awesome/dist/line-awesome/css/line-awesome.min.css";
 
+import Choices from "choices.js";
+import "choices.js/public/assets/styles/choices.css";
+
 Alpine.plugin(Clipboard);
 
 function updateListenerExtension(target) {
@@ -90,3 +93,7 @@ window.CodeMirror = function getCodeMirror(target, current = null) {
         }),
     })
 }
+
+const choices = new Choices('.js-choice', {
+    removeItems: false,
+});

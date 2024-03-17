@@ -40,7 +40,7 @@ if (!function_exists('put_to_env')) {
 
         if (!file_put_contents($envFile, $str)) throw new Exception('Не удалось записать .env файл!');
 
-        Artisan::call('optimize');
+        Artisan::call('config:clear');
 
         return true;
     }

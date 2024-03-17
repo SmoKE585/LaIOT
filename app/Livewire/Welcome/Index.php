@@ -4,6 +4,7 @@ namespace App\Livewire\Welcome;
 
 use App\Models\User;
 use App\Traits\ValidationAttributes;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
@@ -34,8 +35,24 @@ class Index extends Component
         'db_password' => '',
     ];
 
+    public array $basicSettings = [
+        'timezone' => '',
+        'place_to_save_code' => 'files',
+        'base_dir' => '',
+        'path_to_php' => '',
+        'is_windows' => false,
+    ];
+
     public function mount()
     {
+        $this->basicSettings['base_dir'] = str_replace('\app\Livewire\Welcome', '', __DIR__);
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->basicSettings['is_windows'] = true;
+        }
+        if($this->basicSettings['is_windows']) {
+            $this->basicSettings['path_to_php'] = shell_exec('where php.exe');
+        }
+
 //        if ($this->step == 1 && User::exists()) {
 //            $this->redirect(route('install', ['step' => 2]));
 //        } elseif($this->step != 1 && !User::exists()) {
@@ -93,8 +110,15 @@ class Index extends Component
             $this->addError('dbdata.db_connection', $exception->getMessage());
         }
 
+        try {
+            \Artisan::call('migrate', array('--force' => true));
+        } catch (QueryException $exception) {
+            \Artisan::call('migrate:fresh', array('--force' => true));
+        } catch (\Throwable $exception) {
+            $this->addError('dbdata.db_connection', 'Не удалось выполнить миграции! Ошибка: '.$exception->getMessage());
+        }
 
-
+        $this->step++;
     }
 
     public function step3()
