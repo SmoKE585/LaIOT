@@ -4,15 +4,6 @@ use App\Models\Logic\SystemClass;
 use App\Models\Logic\SystemProperties;
 use Illuminate\Support\Facades\DB;
 
-if (!function_exists('config_app')) {
-    function config_app($key)
-    {
-        $get = \App\Models\Settings\Setting::select($key)->first();
-
-        return $get?->{$key} ?? null;
-    }
-}
-
 if (!function_exists('config_app_all')) {
     function config_app_all()
     {

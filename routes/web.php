@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-if(!config_app('is_install')) {
+if(empty(config('laiot.install_datetime'))) {
     Route::name('install')->group(function () {
         Route::get('/install', \App\Livewire\Welcome\Index::class);
     });
