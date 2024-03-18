@@ -22,5 +22,15 @@ trait ValidationAttributes
         'data.realname' => '"ФИО"',
         'data.login' => '"Логин"',
         'data.id' => '"ID"',
+        'basicSettings.timezone' => '"Временная зона"',
+        'basicSettings.place_to_save_code' => '"Место хранения"',
+        'basicSettings.base_dir' => '"Путь"',
+        'basicSettings.path_to_php' => '"Путь"',
+        'dbdata.db_connection' => '"Драйвер"',
+        'dbdata.db_host' => '"IP"',
+        'dbdata.db_port' => '"Порт"',
+        'dbdata.db_database' => '"БД"',
+        'dbdata.db_username' => '"Пользователь"',
+        'dbdata.db_password' => '"Пароль"',
     ];
 }

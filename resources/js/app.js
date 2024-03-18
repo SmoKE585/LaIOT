@@ -94,6 +94,6 @@ window.CodeMirror = function getCodeMirror(target, current = null) {
     })
 }
 
-const choices = new Choices('.js-choice', {
-    removeItems: false,
-});
+// const choices = new Choices('.js-choice', {
+//     removeItems: false,
+// });

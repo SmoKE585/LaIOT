@@ -38,7 +38,7 @@
                 </h3>
                 <ul class="cabqp">
                     <li class="rounded-sm bg-slate-900 cyf82 cp8im cjm6w cfnh0">
-                        <a class="block c1hrc cmo81 crp72 c5mjj c32al" href="{{ route('backend.index') }}">
+                        <a class="block c1hrc cmo81 crp72 c5mjj c32al" href="{{ route('backend.dashboard') }}">
                             <div class="flex items-center">
                                 <svg class="c7n6y ceob2 chcsl" viewBox="0 0 24 24">
                                     <path class="czgoy c3wll" d="M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0z"></path>

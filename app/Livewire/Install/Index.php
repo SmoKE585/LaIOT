@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Livewire\Welcome;
+namespace App\Livewire\Install;
 
+use App\Actions\FirstInstallAction;
 use App\Models\User;
 use App\Traits\ValidationAttributes;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
+#[Layout('components.layouts.empty')]
 class Index extends Component
 {
     use ValidationAttributes;
@@ -46,24 +50,27 @@ class Index extends Component
     public function mount()
     {
         $this->basicSettings['base_dir'] = str_replace('\app\Livewire\Welcome', '', __DIR__);
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $this->basicSettings['is_windows'] = true;
-        }
-        if($this->basicSettings['is_windows']) {
-            $this->basicSettings['path_to_php'] = shell_exec('where php.exe');
-        }
 
-//        if ($this->step == 1 && User::exists()) {
-//            $this->redirect(route('install', ['step' => 2]));
-//        } elseif($this->step != 1 && !User::exists()) {
-//            $this->redirect(route('install', ['step' => 1]));
-//        }
+        try {
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $this->basicSettings['is_windows'] = true;
+
+                if($this->basicSettings['is_windows']) {
+                    $this->basicSettings['path_to_php'] = shell_exec('where php.exe');
+                }
+            }
+        } catch (\Throwable $exception) {
+
+        }
     }
 
     public function step2()
     {
         $validation = $this->validate([
-            'dbdata.db_connection' => Rule::in(['mysql', 'sqlite', 'pgsql']),
+            'dbdata.db_connection' => [
+                'required',
+                Rule::in(['mysql', 'sqlite', 'pgsql'])
+            ],
             'dbdata.db_host' => [
                 Rule::requiredIf(function () {
                     return $this->dbdata['db_connection'] != 'sqlite';
@@ -118,10 +125,48 @@ class Index extends Component
             $this->addError('dbdata.db_connection', 'Не удалось выполнить миграции! Ошибка: '.$exception->getMessage());
         }
 
+        try {
+            (new FirstInstallAction())->run();
+        } catch (\Throwable $exception) {
+            $this->addError('dbdata.db_connection', 'Не удалось установить базовые классы! Ошибка: '.$exception->getMessage());
+        }
+
         $this->step++;
     }
 
     public function step3()
+    {
+        $validation = $this->validate([
+            'basicSettings.timezone' => [
+                'required',
+                Rule::in(timezone_identifiers_list())
+            ],
+            'basicSettings.place_to_save_code' => Rule::in(['files', 'database']),
+            'basicSettings.base_dir' => 'required|string',
+            'basicSettings.path_to_php' => [
+                Rule::requiredIf(function () {
+                    return $this->basicSettings['is_windows'];
+                }),
+                'string'
+            ],
+            'basicSettings.is_windows' => [
+                'required',
+                'boolean',
+            ],
+        ]);
+
+        try {
+            foreach ($validation['basicSettings'] as $key => $value) {
+                put_to_env($key, $value);
+            }
+        } catch (\Throwable $exception) {
+            $this->addError('basicSettings.place_to_save_code', $exception->getMessage());
+        }
+
+        $this->step++;
+    }
+
+    public function step4()
     {
         $validation = $this->validate([
             'data.login' => 'required|alpha_num:ascii|min:3|max:250',
@@ -144,13 +189,30 @@ class Index extends Component
             'email' => $validation['data']['email']
         ], $validation['data']);
 
-        auth()->login($user);
+        if($user) {
+            put_to_env('INSTALL_DATETIME', '"'.now()->toDateTimeString().'"');
 
-        $this->step++;
+            auth()->login($user);
+
+            $iteration = 0;
+            while (true) {
+                $iteration++;
+
+                Artisan::call('optimize');
+
+                if(\Route::has('backend.dashboard')) {
+                    $this->redirect(route('backend.dashboard'));
+                }
+
+                sleep(2);
+
+                if($iteration > 3) break;
+            }
+        }
     }
 
     public function render()
     {
-        return view('livewire.welcome.index');
+        return view('livewire.install.index');
     }
 }

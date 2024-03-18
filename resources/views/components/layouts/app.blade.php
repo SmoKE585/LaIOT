@@ -2,9 +2,11 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <title>Mosaic HTML Demo - Analytics</title>
+    <title>@yield('title', 'LaIOT - Панель управления')</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="shortcut icon" href="/backend/images/logo-mini.svg">
+
     <link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
     <script>
         if (localStorage.getItem('dark-mode') === 'false' || !('dark-mode' in localStorage)) {
@@ -75,19 +77,15 @@
       x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
 
 <div>
-    @if(auth()->check() && config_app('is_install'))
-        <div class="flex ct1ew c3z79">
-            <x-sidebar-menu/>
+    <div class="flex ct1ew c3z79">
+        <x-sidebar-menu/>
 
-            <div class="flex c8gbp cqd18 c4ijw chmlm cy6kd">
-                <livewire:backend.system.header />
+        <div class="flex c8gbp cqd18 c4ijw chmlm cy6kd">
+            <livewire:backend.system.header />
 
-                {{ $slot }}
-            </div>
+            {{ $slot }}
         </div>
-    @else
-        {{ $slot }}
-    @endif
+    </div>
 </div>
 
 <script src="{{ asset('backend/js/main.js') }}"></script>

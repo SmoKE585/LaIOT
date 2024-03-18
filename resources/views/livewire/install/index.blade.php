@@ -1,3 +1,5 @@
+@section('title', 'LaIOT - Установка системы управления умным домом')
+
 <main class="bg-white c3jt4 install_bg">
     <div class="flex c4ijw">
         <div class="c3ff8">
@@ -46,10 +48,9 @@
                                 </h1>
                                 <p>
                                     Меня зовут <b>LaIOT</b> и я буду управлять твоим умным домом.
-                                    Дла начала, давай выполним базовую настройку программы.<br>
+                                    Дла начала, давай выполним базовую настройку программы.
                                     Сейчас мы настроим только обязательные данные, полный список настроек ты сможешь
-                                    посмотреть
-                                    в разделе "Настройки".
+                                    посмотреть в разделе "Настройки".
                                 </p>
                             </div>
 
@@ -84,8 +85,9 @@
                                 </h1>
                                 <p>
                                     Сейчас нужно указать данные для подключения к БД и запустить миграции (наполнение
-                                    БД).<br>
-                                    После заполнения всех настроек - мы зашифруем файл конфигурации.
+                                    БД).
+                                    После полной настройки системы ты сможешь зашифровать файл конфигурации, чтобы никто не смог прочитать его
+                                    содержимое, кроме этой копии системы и конечно - тебя, если ты не забудешь пароль для расшифровки.
                                 </p>
                             </div>
 
@@ -187,8 +189,8 @@
                                 <div class="mb-4">
                                     <label class="block text-sm cw92y ci4cg" for="basicSettings.place_to_save_code">Где будем хранить твой код?</label>
                                     <select id="basicSettings.place_to_save_code" wire:model="basicSettings.place_to_save_code" class="cy9mt c3ff8">
-                                        <option>В файлах</option>
-                                        <option>В базе данных</option>
+                                        <option value="files">В файлах</option>
+                                        <option value="database">В базе данных</option>
                                     </select>
                                     @error('basicSettings.place_to_save_code')
                                     <div class="text-red-500 text-xs">{{ $message }}</div>
@@ -196,7 +198,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm cw92y ci4cg" for="basicSettings.timezone">Временная зона системы</label>
-                                    <select id="basicSettings.timezone" wire:model="basicSettings.timezone" class="cy9mt c3ff8 js-choice">
+                                    <select id="basicSettings.timezone" wire:model="basicSettings.timezone" class="cy9mt c3ff8">
                                         @foreach(timezone_identifiers_list() as $timezone)
                                             <option>{{$timezone}}</option>
                                         @endforeach
@@ -240,14 +242,15 @@
                         <div class="cofxq w-full">
                             <div class="mb-10 text-center border-b-2 border-gray-50 p-4">
                                 <h1 class="text-3xl text-slate-800 dark:text-slate-100 font-bold crkc7">
-                                    Базовые настройки
+                                    Создание пользователя
                                 </h1>
                                 <p>
-                                    Осталось совсем немного, теперь нужно настроить базовые вещи в системе. Без них мы
-                                    не сможем продолжить.
+                                    Почти все готово! Теперь создадим учетную запись для администратора системы. Эти данные потребуются
+                                    для входа в панель управления и WEB интерфейс. В разделе "Пользователи" ты сможешь создать дополнительные
+                                    аккаунты.
                                 </p>
                             </div>
-                            <form wire:submit="step3">
+                            <form wire:submit="step4">
                                 <div class="mb-4">
                                     <label class="block text-sm cw92y ci4cg" for="data.email">E-MAIL</label>
                                     <input id="data.email" wire:model="data.email" class="c03gb c3ff8 w-full"

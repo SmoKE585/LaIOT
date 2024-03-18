@@ -4,12 +4,21 @@ use Illuminate\Support\Facades\Route;
 
 if(empty(config('laiot.install_datetime'))) {
     Route::name('install')->group(function () {
-        Route::get('/install', \App\Livewire\Welcome\Index::class);
+        Route::get('/install', \App\Livewire\Install\Index::class);
     });
+
+    Route::get('/{any}', function () {
+        return redirect()->route('install');
+    })->where('any', '.*');
 } else {
+    //Если заходят в установку, когда все уже установили
+    Route::get('/install/{step?}', function () {
+        return redirect()->route('backend.dashboard');
+    })->where('step', '.*');
+
     Route::prefix('backend')->name('backend.')->group(function () {
         Route::middleware('auth')->group(function () {
-            Route::get('/dashboard', \App\Livewire\Backend\Index::class)->name('index');
+            Route::get('/dashboard', \App\Livewire\Backend\Index::class)->name('dashboard');
 
             Route::prefix('logic')->name('logic.')->group(function () {
                 Route::get('/classes', \App\Livewire\Backend\Logic\Classes::class)->name('classes');

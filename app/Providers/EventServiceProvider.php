@@ -30,12 +30,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //Записываем настройки дефолтные после миграции, если их нет
-        Event::listen(MigrationsEnded::class, function (MigrationsEnded $event) {
-            if($event->method === 'up' && empty(config('laiot.install_datetime'))) {
-                (new FirstInstallAction())->run();
-            }
-        });
+
     }
 
     /**

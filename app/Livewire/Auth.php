@@ -4,10 +4,12 @@ namespace App\Livewire;
 
 use App\Traits\ValidationAttributes;
 use Illuminate\Support\Facades\Route;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
+#[Layout('components.layouts.empty')]
 class Auth extends Component
 {
     use ValidationAttributes;
@@ -26,8 +28,6 @@ class Auth extends Component
         if(auth()->check()) {
             auth()->logout();
             session()->regenerate();
-        } elseif(is_null(Route::getRoutes()->getByName('backend.dashboard'))) {
-            $this->redirect(\route('backend.install'));
         }
     }
 
@@ -44,7 +44,7 @@ class Auth extends Component
         $validate = $this->validate();
 
         if(auth()->attempt($validate['data'])) {
-            $this->redirect(!empty($this->to) ? $this->to : route('backend.index'));
+            $this->redirect(!empty($this->to) ? $this->to : route('backend.dashboard'));
         } else {
             $this->addError('data.email', 'Неверный логин или пароль!');
         }
