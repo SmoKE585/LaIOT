@@ -46,13 +46,13 @@ class SystemClass extends Model
         return $this->hasMany(SystemObject::class);
     }
 
-    public function children() : HasMany
+    public function children() : HasOne
     {
-        return $this->hasMany(self::class, 'parent_id', 'id');
+        return $this->hasOne(self::class, 'parent_id', 'id');
     }
 
     public function properties()
     {
-        return $this->hasMany(SystemProperties::class, 'system_class_id', 'id')->orWhereColumn('system_properties.system_class_id', '=', $this->parent_id);
+        return $this->hasMany(SystemProperty::class, 'system_class_id', 'id')->orWhereColumn('system_properties.system_class_id', '=', $this->parent_id);
     }
 }

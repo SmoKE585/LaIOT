@@ -87,16 +87,16 @@
                                     <div class="c50r7 c1gyb cnzfa csmh2 cox8h">
                                         <div class="rounded ct1ew cmo81 csj4z ccg4t c7j98 ciamg cynm4" x-show="open" x-transition:enter="c5mjj coq4n ch8aq ccio3" x-transition:enter-start="opacity-0 cf3f3" x-transition:enter-end="cqsra cfwq4" x-transition:leave="c5mjj coq4n ch8aq" x-transition:leave-start="cqsra" x-transition:leave-end="opacity-0" style="display: none;">
                                             <div class="text-sm">
-                                                Внимание! Опасное действие. Для защиты от аттак, по умолчанию установлен лимит запросов: 60 запросов в минуту. Вы можете изменить значение в настройках системы.
+                                                Внимание! Опасное действие. Для защиты от атак, по умолчанию установлен лимит запросов: 60 запросов в минуту. Вы можете изменить значение в настройках системы.
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center" x-data="{ checked: false }">
+                            <div class="flex items-center" x-data="{ checked: {{ $data['allow_external'] ? 'true' : 'false' }} }">
                                 <div class="c987k">
-                                    <input wire:model="data.allow_external" type="checkbox" id="allow_external" class="cbl3h" x-model="checked">
-                                    <label class="ce4zx c717g" for="allow_external">
+                                    <input wire:model="data.allow_external" type="checkbox" id="data.allow_external" class="cbl3h" x-model="checked">
+                                    <label class="ce4zx c717g" for="data.allow_external">
                                         <span class="bg-white cl0q9" aria-hidden="true"></span>
                                         <span class="cbl3h">Switch label</span>
                                     </label>
@@ -128,10 +128,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center" x-data="{ checked: false }">
+                            <div class="flex items-center" x-data="{ checked: {{ $data['active'] ? 'true' : 'false' }} }">
                                 <div class="c987k">
-                                    <input wire:model="data.active" type="checkbox" id="active" class="cbl3h" x-model="checked">
-                                    <label class="ce4zx c717g" for="active">
+                                    <input wire:model="data.active" type="checkbox" id="data.active" class="cbl3h" x-model="checked">
+                                    <label class="ce4zx c717g" for="data.active">
                                         <span class="bg-white cl0q9" aria-hidden="true"></span>
                                         <span class="cbl3h">Switch label</span>
                                     </label>
@@ -172,13 +172,13 @@
                         </div>
                     </div>
 
-                    <livewire:modules.code-editor wire:model="code"/>
+                    <livewire:backend.modules.code-editor wire:model="code"/>
                     @error('code')
                     <div class="text-red-500 text-xs">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="text-center">
+                <div class="text-center flex gap-1 justify-center">
                     <a href="{{ route('backend.logic.scripts') }}" class="btn dark:bg-slate-800 border-slate-200 dark:border-slate-700 c46uo cm7vt ch1ih c6w4h">
                         Назад
                     </a>
@@ -190,9 +190,20 @@
                             Создать скрипт
                         @endif
                     </button>
+
+                    @if($data['id'])
+                        <div x-data="{confirm: false}">
+                            <button x-show="!confirm" type="button" class="btn dark:bg-slate-800 border-slate-200 dark:border-slate-700 c46uo cm7vt c6tg6" @click="confirm = true">
+                                Удалить скрипт
+                            </button>
+
+                            <button x-show="confirm" wire:click="delete()" type="button" class="btn cro9h c0vjv ceqwg" @click="confirm = true">
+                                Да, я уверен - удалить!
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </form>
-            <a href="#" wire:click="$dispatch('openModal', { component: 'backend.modal.logic.script-run-modal' })">TEST</a>
         </div>
     </div>
 

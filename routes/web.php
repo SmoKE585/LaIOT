@@ -39,13 +39,13 @@ if(empty(config('laiot.install_datetime'))) {
                 Route::get('/manage/{id?}', \App\Livewire\Backend\Users\UsersManage::class)->name('users.manage');
             });
 
-            Route::get('/modules/MQTT', \App\Livewire\Modules\MQTT\Index::class)->name('modules.MQTT.index');
+            Route::get('/MQTT', \App\Livewire\Backend\MQTT\Index::class)->name('MQTT.index');
 
             Route::prefix('settings')->group(function () {
-                Route::get('/general', \App\Livewire\Backend\Settings\General::class)->name('settings.general');
+                Route::get('/general', \App\Livewire\Backend\Settings\Index::class)->name('settings.general');
             });
         });
     });
 
-    Route::get('/login', \App\Livewire\Auth::class)->name('login');
+    Route::get('/'.config('laiot.default_login_path'), \App\Livewire\Auth::class)->name('login');
 }

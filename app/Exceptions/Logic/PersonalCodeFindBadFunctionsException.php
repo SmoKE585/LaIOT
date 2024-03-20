@@ -3,16 +3,12 @@
 namespace App\Exceptions\Logic;
 
 use Exception;
+use Throwable;
 
 class PersonalCodeFindBadFunctionsException extends Exception
 {
-    public function __construct($message, $path = null)
+    public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {
-        debmes($message, 'error', $path);
-    }
-
-    public function report()
-    {
-
+        parent::__construct($message, $code, $previous);
     }
 }

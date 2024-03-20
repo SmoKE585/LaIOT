@@ -10,26 +10,14 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * The path to your application's "home" route.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
-     */
-    public const HOME = '/web';
-
-    /**
-     * Define your route model bindings, pattern filters, and other route configuration.
-     */
     public function boot(): void
     {
         RateLimiter::for('scripts', function (Request $request) {
-            return ($request->ip() === '127.0.0.1') ? Limit::none() : Limit::perMinute((int) config_app('script_rate_limit'))->by($request->ip());
+            return ($request->ip() == '127.0.0.1') ? Limit::none() : Limit::perMinute((int) config('laiot.script_rate_limit'))->by($request->ip());
         });
 
         $this->routes(function () {
-            Route::middleware('api')
+            Route::middleware('web')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 

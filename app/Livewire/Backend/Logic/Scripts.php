@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Backend\Logic;
 
-use App\Models\Logic\Script;
+use App\Models\Logic\SystemScript;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
@@ -45,7 +45,7 @@ class Scripts extends Component
     #[Computed]
     public function items()
     {
-        $model = new Script();
+        $model = new SystemScript();
 
         if($this->filter['show'] == 'allow_internet') {
             $model = $model->where('allow_external', '1');

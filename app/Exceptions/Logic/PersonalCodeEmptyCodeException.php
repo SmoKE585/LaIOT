@@ -4,16 +4,12 @@ namespace App\Exceptions\Logic;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class PersonalCodeEmptyCodeException extends Exception
 {
-    public function __construct($message, $path = null)
+    public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {
-        debmes($message, 'warning', $path);
-    }
-
-    public function report()
-    {
-
+        parent::__construct($message, $code, $previous);
     }
 }

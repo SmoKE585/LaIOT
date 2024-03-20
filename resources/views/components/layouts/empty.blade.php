@@ -16,7 +16,8 @@
       x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))">
 
 <div>
-    {{ $slot }}
+    {{ $slot ?? '' }}
+    @yield('content', '')
 </div>
 
 <script src="{{ asset('backend/js/main.js') }}"></script>

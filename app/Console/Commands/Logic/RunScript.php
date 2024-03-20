@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Logic;
 
 use App\Actions\PersonalCodeControl;
-use App\Models\Logic\Script;
+use App\Models\Logic\SystemScript;
 use Illuminate\Console\Command;
 
 class RunScript extends Command
@@ -14,6 +14,6 @@ class RunScript extends Command
 
     public function handle()
     {
-        (new PersonalCodeControl())->setModel(Script::findOrFail($this->argument('script_id')))->run();
+        (new PersonalCodeControl())->setModel(SystemScript::findOrFail($this->argument('script_id')))->run();
     }
 }

@@ -1,17 +1,9 @@
 <?php
 
 use App\Models\Logic\SystemClass;
-use App\Models\Logic\SystemProperties;
+use App\Models\Logic\SystemProperty;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-
-if (!function_exists('config_app_all')) {
-    function config_app_all()
-    {
-        $get = \App\Models\Settings\Setting::first();
-
-        return $get->toArray();
-    }
-}
 
 if (!function_exists('put_to_env')) {
     /**
@@ -38,6 +30,9 @@ if (!function_exists('put_to_env')) {
 
         $str = substr($str, 0, -1);
 
+        //Чистим лишние переносы строк
+        $str = preg_replace("#(\n ?){3,}#", "\n", $str);
+
         if (!file_put_contents($envFile, $str)) throw new Exception('Не удалось записать .env файл!');
 
         Artisan::call('config:clear');
@@ -54,10 +49,10 @@ if (!function_exists('declension')) {
 }
 
 if (!function_exists('storeProperty')) {
-    function storeProperty(array $property, array $setting) : SystemProperties
+    function storeProperty(array $property, array $setting) : SystemProperty
     {
         return DB::transaction(function () use ($property, $setting) {
-            $prop = SystemProperties::updateOrCreate([
+            $prop = SystemProperty::updateOrCreate([
                 'id' => $property['id']
             ], $property);
 

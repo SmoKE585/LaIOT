@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "ext-intl": "*",
         "dragonmantank/cron-expression": "^3.3",
         "drandin/declension-nouns": "dev-master",
         "guzzlehttp/guzzle": "^7.2",
@@ -13,9 +14,9 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.4",
+        "opcodesio/log-viewer": "^3.6",
         "php-mqtt/laravel-client": "^1.5",
-        "wire-elements/modal": "^2.0",
-      "ext-intl": "*"
+        "wire-elements/modal": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

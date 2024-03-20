@@ -3,7 +3,7 @@
         <div class="cyqq9 cxbdy clk9r cxlzs c958j">
             <div class="clxmc c958j">
                 <h1 class="text-slate-800 dark:text-slate-100 font-bold cy709 cjefr">
-                    В системе {{ declension($this->items_count, 'класс') }}
+                    В системе {{ declension($this->items_count, 'группа') }}
                 </h1>
             </div>
 
@@ -26,7 +26,7 @@
                 </div>
 
                 <a href="{{ route('backend.logic.classes.manage') }}" class="btn cfeqx cf1ce ceqwg">
-                    Новый класс
+                    Новая группа
                 </a>
 
             </div>
@@ -97,58 +97,63 @@
             </ul>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-2">
-            @forelse($this->items as $item)
-                <div
-                    class="relative bg-white w-full p-4 mb-12 rounded-md shadow-md"
-                    x-data="{ class_{{ $item->id }}: 'class' }"
-                >
-                    <div class="absolute right-4 -bottom-10 bg-slate-800 w-16 rounded-b-md" style="width: fit-content;">
-                        <ul class="flex gap-1 items-center p-2">
-                            <li x-data="{show_hint: false}" @mouseover="show_hint = true" @mouseleave="show_hint = false">
-                                <button class="text-gray-400 hover:text-white block w-full flex gap-1 items-center">
+        <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                @forelse($this->items as $item)
+                    <div class="bg-white rounded-lg p-3 mb-3" x-data="{ class_{{ $item->id }}: 'class' }">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="flex gap-2 items-center mb-2">
+                                    <i class="las la-chevron-circle-right la-2x"></i>
+                                    <div class="flex flex-col">
+                                        <a href="{{ route('backend.logic.classes.view', $item->id) }}" class="text-lg leading-none">{{ $item->title }}</a>
+                                        <div class="text-xs text-gray-400">
+                                            {{ $item->description }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="inline-flex rounded-full cq2p6 cdbjv c6rpu cwvsn cob4g cw92y csq8i c0qeg cynm4">Product</div>
+                            </div>
+
+                            <div class="bg-slate-800 w-16 rounded-md" style="width: fit-content;">
+                                <ul class="flex gap-1 items-center p-2">
+                                    <li x-data="{show_hint: false}" @mouseover="show_hint = true"
+                                        @mouseleave="show_hint = false">
+                                        <button class="text-gray-400 hover:text-white block w-full flex gap-1 items-center">
                                     <span class="block w-8 mx-auto">
                                         <i class="las la-object-group text-white text-lg"></i>
                                     </span>
-                                    <div class="text-xs" x-show="show_hint" x-transition>Объекты</div>
-                                </button>
-                            </li>
-                            <li x-data="{show_hint: false}" @mouseover="show_hint = true" @mouseleave="show_hint = false">
-                                <button class="text-gray-400 hover:text-white block w-full flex gap-1 items-center">
+                                            <div class="text-xs" x-show="show_hint" x-transition>Объекты</div>
+                                        </button>
+                                    </li>
+                                    <li x-data="{show_hint: false}" @mouseover="show_hint = true"
+                                        @mouseleave="show_hint = false">
+                                        <button class="text-gray-400 hover:text-white block w-full flex gap-1 items-center">
                                     <span class="block w-8 mx-auto">
                                         <i class="las la-code text-white text-lg"></i>
                                     </span>
-                                    <div class="text-xs" x-show="show_hint" x-transition>Методы</div>
-                                </button>
-                            </li>
-                            <li x-data="{show_hint: false}" @mouseover="show_hint = true" @mouseleave="show_hint = false">
-                                <button class="text-gray-400 hover:text-white block w-full flex gap-1 items-center">
+                                            <div class="text-xs" x-show="show_hint" x-transition>Методы</div>
+                                        </button>
+                                    </li>
+                                    <li x-data="{show_hint: false}" @mouseover="show_hint = true"
+                                        @mouseleave="show_hint = false">
+                                        <button class="text-gray-400 hover:text-white block w-full flex gap-1 items-center">
                                     <span class="block w-8 mx-auto">
                                         <i class="las la-cube text-white text-lg"></i>
                                     </span>
-                                    <div class="text-xs" x-show="show_hint" x-transition>Свойства</div>
-                                </button>
-                            </li>
-                        </ul>
+                                            <div class="text-xs" x-show="show_hint" x-transition>Свойства</div>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <a href="{{ route('backend.logic.classes.view', $item->id) }}">
-                        <div><i class="las la-object-ungroup"></i> Класс:</div>
-                        <h1 class="text-2xl font-bold">
-                            {{ $item->title }}
-                        </h1>
-                        <hr class="my-2"/>
-                        <p class="mb-2 leading-relaxed">
-                            @if(!empty($item->description))
-                                {{ \Illuminate\Support\Str::limit($item->description, 100) }}
-                            @else
-                                <span class="text-gray-300">Описание для класса не указано. Вы можете добавить его в настройках класса.</span>
-                            @endif
-                        </p>
-                    </a>
-                </div>
-            @empty
+                @empty
 
-            @endforelse
+                @endforelse
+            </div>
         </div>
+
     </div>
 </main>

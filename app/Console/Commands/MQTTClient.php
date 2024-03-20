@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Events\MQTTIncomingValue;
+use App\Events\MQTTIncomingValueEvent;
 use Illuminate\Console\Command;
 use PhpMqtt\Client\Exceptions\DataTransferException;
 use PhpMqtt\Client\Exceptions\InvalidMessageException;
@@ -22,7 +22,7 @@ class MQTTClient extends Command
         try {
             $mqtt = MQTT::connection();
             $mqtt->subscribe('#', function (string $topic, string $message) {
-                MQTTIncomingValue::dispatch(['topic' => $topic, 'value' => $message]);
+                MQTTIncomingValueEvent::dispatch(['topic' => $topic, 'value' => $message]);
 
                 $this->info("Received message on topic {$topic} - {$message}");
             });

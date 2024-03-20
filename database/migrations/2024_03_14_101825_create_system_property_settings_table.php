@@ -11,19 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('system_property_settings', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('system_property_id')->index();
-            $table->foreign('system_property_id')->references('id')->on('system_properties');
+            $table->foreignId('system_property_id')->constrained()->cascadeOnDelete();
             $table->integer('keep_history')->default(0);
             $table->string('validation')->nullable();
 
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

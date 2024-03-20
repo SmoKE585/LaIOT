@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('system_object_id')->index();
-            $table->foreign('system_object_id')->references('id')->on('system_objects');
+            $table->foreignId('system_object_id')->constrained();
             $table->string('title');
             $table->bigInteger('floor')->nullable();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

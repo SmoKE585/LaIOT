@@ -40,6 +40,14 @@
                 </div>
 
                 <div class="flex cmca2 c7ie4 c3hpn cwjye chmlm cofxq w-full p-4 bg-white rounded-lg">
+                    @script
+                    <script>
+                        $wire.on('needRefreshStep', (step) => {
+                            eval('$wire.step'+step.step+'()');
+                        });
+                    </script>
+                    @endscript
+
                     @if($step == 1)
                         <div class="cofxq w-full">
                             <div class="mb-10 text-center border-b-2 border-gray-50 p-4">
@@ -86,91 +94,98 @@
                                 <p>
                                     Сейчас нужно указать данные для подключения к БД и запустить миграции (наполнение
                                     БД).
-                                    После полной настройки системы ты сможешь зашифровать файл конфигурации, чтобы никто не смог прочитать его
-                                    содержимое, кроме этой копии системы и конечно - тебя, если ты не забудешь пароль для расшифровки.
+                                    После полной настройки системы ты сможешь зашифровать файл конфигурации, чтобы никто
+                                    не смог прочитать его
+                                    содержимое, кроме этой копии системы и конечно - тебя, если ты не забудешь пароль
+                                    для расшифровки.
                                 </p>
                             </div>
 
-                            <div wire:loading.block wire:target="step2" class="!w-full">
+                            <div @if(!$needRefreshStep) wire:loading.block wire:target="step2" @endif class="!w-full">
                                 <x-loading text="Сохраняем данные и пробуем запустить миграции..."/>
                             </div>
 
-                            <form wire:submit="step2" wire:loading.remove x-data="{typeSQL: 'mysql'}">
-                                <div class="mb-4">
-                                    <label class="block text-sm cw92y ci4cg" for="dbdata.db_connection">Тип БД</label>
-
-                                    <select x-model="typeSQL" wire:model="dbdata.db_connection"
-                                            id="dbdata.db_connection" class="cy9mt w-full">
-                                        <option value="mysql">MySQL (MariaDB)</option>
-                                        <option value="pgsql">PostgreSQL</option>
-                                        <option value="sqlite">SQLite</option>
-                                    </select>
-
-                                    @error('dbdata.db_connection')
-                                    <div class="text-red-500 text-xs">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div x-show="typeSQL != 'sqlite'">
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <div class="mb-4">
-                                            <label class="block text-sm cw92y ci4cg" for="dbdata.db_host">IP базы
-                                                данных/сокет</label>
-                                            <input id="dbdata.db_host" wire:model="dbdata.db_host"
-                                                   class="c03gb c3ff8 w-full"
-                                                   type="text" placeholder="Чаще всего - 127.0.0.1">
-                                            @error('dbdata.db_host')
-                                            <div class="text-red-500 text-xs">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="mb-4">
-                                            <label class="block text-sm cw92y ci4cg" for="dbdata.db_port">Порт базы
-                                                данных</label>
-                                            <input id="dbdata.db_port" wire:model="dbdata.db_port"
-                                                   class="c03gb c3ff8 w-full"
-                                                   type="text" placeholder="Чаще всего - 3306">
-                                            @error('dbdata.db_port')
-                                            <div class="text-red-500 text-xs">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
+                            @if(!$needRefreshStep)
+                                <form wire:submit="step2" wire:loading.remove x-data="{typeSQL: 'mysql'}">
                                     <div class="mb-4">
-                                        <label class="block text-sm cw92y ci4cg" for="dbdata.db_database">Название базы
-                                            данных</label>
-                                        <input id="dbdata.db_database" wire:model="dbdata.db_database"
-                                               class="c03gb c3ff8 w-full"
-                                               type="text" placeholder="По умолчанию - LaIOT_System">
-                                        @error('dbdata.db_database')
+                                        <label class="block text-sm cw92y ci4cg" for="dbdata.db_connection">Тип
+                                            БД</label>
+
+                                        <select x-model="typeSQL" wire:model="dbdata.db_connection"
+                                                id="dbdata.db_connection" class="cy9mt w-full">
+                                            <option value="mysql">MySQL/MariaDB</option>
+                                            <option value="pgsql">PostgreSQL</option>
+                                            <option value="sqlite">SQLite</option>
+                                        </select>
+
+                                        @error('dbdata.db_connection')
                                         <div class="text-red-500 text-xs">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="grid grid-cols-2 gap-2">
+                                    <div x-show="typeSQL != 'sqlite'">
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div class="mb-4">
+                                                <label class="block text-sm cw92y ci4cg" for="dbdata.db_host">IP базы
+                                                    данных/сокет</label>
+                                                <input id="dbdata.db_host" wire:model="dbdata.db_host"
+                                                       class="c03gb c3ff8 w-full"
+                                                       type="text" placeholder="Чаще всего - 127.0.0.1">
+                                                @error('dbdata.db_host')
+                                                <div class="text-red-500 text-xs">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="block text-sm cw92y ci4cg" for="dbdata.db_port">Порт базы
+                                                    данных</label>
+                                                <input id="dbdata.db_port" wire:model="dbdata.db_port"
+                                                       class="c03gb c3ff8 w-full"
+                                                       type="text" placeholder="Чаще всего - 3306">
+                                                @error('dbdata.db_port')
+                                                <div class="text-red-500 text-xs">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div class="mb-4">
-                                            <label class="block text-sm cw92y ci4cg" for="dbdata.db_username">Имя
-                                                пользователя</label>
-                                            <input id="dbdata.db_username" wire:model="dbdata.db_username"
+                                            <label class="block text-sm cw92y ci4cg" for="dbdata.db_database">Название
+                                                базы
+                                                данных</label>
+                                            <input id="dbdata.db_database" wire:model="dbdata.db_database"
                                                    class="c03gb c3ff8 w-full"
-                                                   type="text" placeholder="Имя пользователя для подключения к БД">
-                                            @error('dbdata.db_username')
+                                                   type="text" placeholder="По умолчанию - LaIOT_System">
+                                            @error('dbdata.db_database')
                                             <div class="text-red-500 text-xs">{{ $message }}</div>
                                             @enderror
                                         </div>
-                                        <div class="mb-4">
-                                            <label class="block text-sm cw92y ci4cg" for="dbdata.db_password">Пароль к
-                                                БД</label>
-                                            <input id="dbdata.db_password" wire:model="dbdata.db_password"
-                                                   class="c03gb c3ff8 w-full"
-                                                   type="text" placeholder="Пароль, лучше больше 10 символов :)">
-                                            @error('dbdata.db_password')
-                                            <div class="text-red-500 text-xs">{{ $message }}</div>
-                                            @enderror
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div class="mb-4">
+                                                <label class="block text-sm cw92y ci4cg" for="dbdata.db_username">Имя
+                                                    пользователя</label>
+                                                <input id="dbdata.db_username" wire:model="dbdata.db_username"
+                                                       class="c03gb c3ff8 w-full"
+                                                       type="text" placeholder="Имя пользователя для подключения к БД">
+                                                @error('dbdata.db_username')
+                                                <div class="text-red-500 text-xs">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="block text-sm cw92y ci4cg" for="dbdata.db_password">Пароль
+                                                    к
+                                                    БД</label>
+                                                <input id="dbdata.db_password" wire:model="dbdata.db_password"
+                                                       class="c03gb c3ff8 w-full"
+                                                       type="text" placeholder="Пароль, лучше больше 10 символов :)">
+                                                @error('dbdata.db_password')
+                                                <div class="text-red-500 text-xs">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="flex items-center cmgwo">
-                                    <button type="submit" class="btn cfeqx cf1ce ceqwg c1fq8">Дальше -&gt;</button>
-                                </div>
-                            </form>
+                                    <div class="flex items-center cmgwo">
+                                        <button type="submit" class="btn cfeqx cf1ce ceqwg c1fq8">Дальше -&gt;</button>
+                                    </div>
+                                </form>
+                            @endif
                         </div>
                     @endif
 
@@ -187,8 +202,10 @@
                             </div>
                             <form wire:submit="step3">
                                 <div class="mb-4">
-                                    <label class="block text-sm cw92y ci4cg" for="basicSettings.place_to_save_code">Где будем хранить твой код?</label>
-                                    <select id="basicSettings.place_to_save_code" wire:model="basicSettings.place_to_save_code" class="cy9mt c3ff8">
+                                    <label class="block text-sm cw92y ci4cg" for="basicSettings.place_to_save_code">Где
+                                        будем хранить твой код?</label>
+                                    <select id="basicSettings.place_to_save_code"
+                                            wire:model="basicSettings.place_to_save_code" class="cy9mt c3ff8">
                                         <option value="files">В файлах</option>
                                         <option value="database">В базе данных</option>
                                     </select>
@@ -197,8 +214,10 @@
                                     @enderror
                                 </div>
                                 <div class="mb-4">
-                                    <label class="block text-sm cw92y ci4cg" for="basicSettings.timezone">Временная зона системы</label>
-                                    <select id="basicSettings.timezone" wire:model="basicSettings.timezone" class="cy9mt c3ff8">
+                                    <label class="block text-sm cw92y ci4cg" for="basicSettings.timezone">Временная зона
+                                        системы</label>
+                                    <select id="basicSettings.timezone" wire:model="basicSettings.timezone"
+                                            class="cy9mt c3ff8">
                                         @foreach(timezone_identifiers_list() as $timezone)
                                             <option>{{$timezone}}</option>
                                         @endforeach
@@ -211,7 +230,8 @@
                                     <label class="block text-sm cw92y ci4cg" for="basicSettings.base_dir">
                                         Папка, куда установлена система
                                     </label>
-                                    <input id="basicSettings.base_dir" wire:model="basicSettings.base_dir" class="c03gb c3ff8 w-full"
+                                    <input id="basicSettings.base_dir" wire:model="basicSettings.base_dir"
+                                           class="c03gb c3ff8 w-full"
                                            type="text" placeholder="">
                                     @error('basicSettings.base_dir')
                                     <div class="text-red-500 text-xs">{{ $message }}</div>
@@ -222,7 +242,8 @@
                                         <label class="block text-sm cw92y ci4cg" for="basicSettings.path_to_php">
                                             Путь до PHP.exe
                                         </label>
-                                        <input id="basicSettings.path_to_php" wire:model="basicSettings.path_to_php" class="c03gb c3ff8 w-full"
+                                        <input id="basicSettings.path_to_php" wire:model="basicSettings.path_to_php"
+                                               class="c03gb c3ff8 w-full"
                                                type="text" placeholder="">
                                         @error('basicSettings.path_to_php')
                                         <div class="text-red-500 text-xs">{{ $message }}</div>
@@ -245,40 +266,50 @@
                                     Создание пользователя
                                 </h1>
                                 <p>
-                                    Почти все готово! Теперь создадим учетную запись для администратора системы. Эти данные потребуются
-                                    для входа в панель управления и WEB интерфейс. В разделе "Пользователи" ты сможешь создать дополнительные
+                                    Почти все готово! Теперь создадим учетную запись для администратора системы. Эти
+                                    данные потребуются
+                                    для входа в панель управления и WEB интерфейс. В разделе "Пользователи" ты
+                                    сможешь
+                                    создать дополнительные
                                     аккаунты.
                                 </p>
                             </div>
-                            <form wire:submit="step4">
-                                <div class="mb-4">
-                                    <label class="block text-sm cw92y ci4cg" for="data.email">E-MAIL</label>
-                                    <input id="data.email" wire:model="data.email" class="c03gb c3ff8 w-full"
-                                           type="email" placeholder="Используется для входа в систему">
-                                    @error('data.email')
-                                    <div class="text-red-500 text-xs">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm cw92y ci4cg" for="data.password">Пароль</label>
-                                    <input id="data.password" wire:model="data.password" class="c03gb c3ff8 w-full"
-                                           type="password" placeholder="Минимум 8 символов">
-                                    @error('data.password')
-                                    <div class="text-red-500 text-xs">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-sm cw92y ci4cg" for="data.password_confirmation">Повтори
-                                        пароль</label>
-                                    <input id="data.password_confirmation" wire:model="data.password_confirmation"
-                                           class="c03gb c3ff8 w-full" type="password"
-                                           placeholder="Чтобы не было ошибок">
-                                </div>
 
-                                <div class="flex items-center cmgwo">
-                                    <button type="submit" class="btn cfeqx cf1ce ceqwg c1fq8">Дальше -&gt;</button>
-                                </div>
-                            </form>
+                            <div @if(!$needRefreshStep) wire:loading.block wire:target="step4" @endif class="!w-full">
+                                <x-loading text="Создаем пользователя и авторизуемся в системе..."/>
+                            </div>
+
+                            @if(!$needRefreshStep)
+                                <form wire:submit="step4">
+                                    <div class="mb-4">
+                                        <label class="block text-sm cw92y ci4cg" for="data.email">E-MAIL</label>
+                                        <input id="data.email" wire:model="data.email" class="c03gb c3ff8 w-full"
+                                               type="email" placeholder="Используется для входа в систему">
+                                        @error('data.email')
+                                        <div class="text-red-500 text-xs">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm cw92y ci4cg" for="data.password">Пароль</label>
+                                        <input id="data.password" wire:model="data.password" class="c03gb c3ff8 w-full"
+                                               type="password" placeholder="Минимум 8 символов">
+                                        @error('data.password')
+                                        <div class="text-red-500 text-xs">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm cw92y ci4cg" for="data.password_confirmation">Повтори
+                                            пароль</label>
+                                        <input id="data.password_confirmation" wire:model="data.password_confirmation"
+                                               class="c03gb c3ff8 w-full" type="password"
+                                               placeholder="Чтобы не было ошибок">
+                                    </div>
+
+                                    <div class="flex items-center cmgwo">
+                                        <button type="submit" class="btn cfeqx cf1ce ceqwg c1fq8">Дальше -&gt;</button>
+                                    </div>
+                                </form>
+                            @endif
                         </div>
                     @endif
 

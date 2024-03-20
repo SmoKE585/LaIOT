@@ -11,8 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('mqtt_values', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('server_id')->index();
@@ -22,8 +20,6 @@ return new class extends Migration
 
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

@@ -13,7 +13,7 @@
 
 namespace App\Models\Logic{
 /**
- * 
+ *
  *
  * @property int $id
  * @property int|null $class_id
@@ -35,7 +35,7 @@ namespace App\Models\Logic{
 
 namespace App\Models\Logic{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $title
@@ -43,22 +43,22 @@ namespace App\Models\Logic{
  * @property int $allow_external
  * @property int $active
  * @property string|null $cron
- * @method static \Illuminate\Database\Eloquent\Builder|Script newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Script newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Script query()
- * @method static \Illuminate\Database\Eloquent\Builder|Script whereActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Script whereAllowExternal($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Script whereCron($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Script whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Script whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Script whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript query()
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript whereAllowExternal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript whereCron($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SystemScript whereTitle($value)
  */
 	class Script extends \Eloquent {}
 }
 
 namespace App\Models\Logic{
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $parent_id
@@ -81,7 +81,7 @@ namespace App\Models\Logic{
 
 namespace App\Models\Logic{
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $class_id
@@ -100,7 +100,7 @@ namespace App\Models\Logic{
 
 namespace App\Models\Settings{
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $use_db_for_code
@@ -117,7 +117,7 @@ namespace App\Models\Settings{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $login

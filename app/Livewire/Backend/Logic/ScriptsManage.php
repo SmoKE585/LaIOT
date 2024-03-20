@@ -4,7 +4,7 @@ namespace App\Livewire\Backend\Logic;
 
 use App\Actions\PersonalCodeControl;
 use App\Actions\SaveCode;
-use App\Models\Logic\Script;
+use App\Models\Logic\SystemScript;
 use App\Rules\Cron;
 use App\Traits\ValidationAttributes;
 use Livewire\Attributes\Validate;
@@ -26,6 +26,8 @@ class ScriptsManage extends Component
     #[Validate]
     public string $code = '';
 
+    public SystemScript $model;
+
     public function rules()
     {
         return [
@@ -42,9 +44,9 @@ class ScriptsManage extends Component
     public function mount($id = null)
     {
         if(!is_null($id)) {
-            $model = Script::findOrFail($id);
-            $this->data = $model->toArray();
-            $this->code = (new PersonalCodeControl())->setModel($model)->get();
+            $this->model = SystemScript::findOrFail($id);
+            $this->data = $this->model->toArray();
+            $this->code = (new PersonalCodeControl())->setModel($this->model)->get();
         }
     }
 
@@ -52,7 +54,7 @@ class ScriptsManage extends Component
     {
         $validate = $this->validate();
 
-        $model = Script::updateOrCreate([
+        $model = SystemScript::updateOrCreate([
             'id' => $validate['data']['id'],
         ], [
             'title' => $validate['data']['title'],
@@ -64,6 +66,12 @@ class ScriptsManage extends Component
 
         (new PersonalCodeControl())->setModel($model)->put($validate['code']);
 
+        $this->redirect(route('backend.logic.scripts'));
+    }
+
+    public function delete()
+    {
+        $this->model->delete();
         $this->redirect(route('backend.logic.scripts'));
     }
 

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Logic\SystemProperties;
-use App\Observers\Logic\SystemPropertiesObserver;
+use App\Models\Logic\SystemProperty;
+use App\Models\Logic\SystemScript;
+use App\Observers\Logic\SystemPropertyObserver;
+use App\Observers\Logic\SystemScriptObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        SystemProperties::observe(SystemPropertiesObserver::class);
+        SystemProperty::observe(SystemPropertyObserver::class);
+        SystemScript::observe(SystemScriptObserver::class);
     }
 }

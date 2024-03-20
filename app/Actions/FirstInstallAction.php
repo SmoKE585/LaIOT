@@ -11,14 +11,9 @@ class FirstInstallAction
     public function run()
     {
         DB::transaction(function () {
-            Setting::updateOrCreate([
-                'id' => 1
-            ], []);
-
             $basicClass = SystemClass::updateOrCreate([
                 'title' => 'Система',
             ], [
-                'parent_id' => 0,
                 'title' => 'Система',
                 'description' => 'Системный класс, который включает в себя базовый набор функций для работы системы.',
             ]);

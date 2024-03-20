@@ -11,19 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('system_objects', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('system_class_id')->index();
-            $table->foreign('system_class_id')->references('id')->on('system_classes');
+            $table->foreignId('system_class_id')->constrained();
             $table->string('title')->unique();
             $table->string('description')->nullable();
 
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

@@ -61,11 +61,11 @@
                         </div>
 
                         <div class="cbfhc">
-                            <livewire:modules.logic.property-manage :$class />
+                            <livewire:backend.modules.logic.property-manage :$class />
                         </div>
 
                         <div class="cbfhc">
-                            <livewire:modules.logic.property-item :$class />
+                            <livewire:backend.modules.logic.property-item :$class />
                         </div>
                     </div>
                 </div>

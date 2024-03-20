@@ -55,33 +55,52 @@ final class PersonalCodeControl
             $findBadFunction = array_filter($findBadFunction);
 
             if(!empty($findBadFunction)) {
-                throw new PersonalCodeFindBadFunctionsException('Попытка выполнения кода с запрещеными функцмями. ID: '.$this->model->id, $this->model_name);
+                throw new PersonalCodeFindBadFunctionsException('Попытка выполнения кода с запрещенными функциями. ID: '.$this->model->id);
             }
 
             //Меняем каталог на "песочницу"
-            $params[\request()->method()] = \request()->all();
-            $params['HEADERS'] = \request()->header();
-
             $base_dir = config('laiot.base_dir');
             $code = "chdir('".$base_dir."/app/Sandbox/');\n".$code;
-        } catch (PersonalCodeFindBadFunctionsException $exception) {
-            $code = null;
-        } catch (\Throwable $exception) {
-            $code = null;
-        }
 
-        try {
-            if(empty($code)) throw new PersonalCodeEmptyCodeException('Запрос выполнения пустого кода. ID: '.$this->model->id, $this->model_name);
+            if(empty($code)) throw new PersonalCodeEmptyCodeException('Запрос выполнения пустого кода. ID: '.$this->model->id);
 
             $params[\request()->method()] = \request()->all();
             $params['HEADERS'] = \request()->header();
 
+            return eval($code);
+        } catch (PersonalCodeFindBadFunctionsException $exception) {
+            debmes($exception->getMessage(), 'error', $this->model_name);
 
-            eval($code);
+            if(array_search('text/html', request()->getAcceptableContentTypes()) !== false || array_search('*/*', request()->getAcceptableContentTypes()) !== false) {
+                return view('errors.personal-code-error', [
+                    'exception' => $exception,
+                    'model' => $this->model,
+                ]);
+            } else {
+                return json_encode(['error' => true, 'msg' => 'Ошибка при выполнении кода!'], JSON_UNESCAPED_UNICODE);
+            }
         } catch (PersonalCodeEmptyCodeException $exception) {
-
+            debmes($exception->getMessage(), 'warning', $this->model_name);
         } catch (\Throwable $exception) {
-            new PersonalCodeErrorInCodeCodeException('Ошибка при выполнении кода: '.$exception->getMessage().', в строке: '.($exception->getLine()-3).'. ID: '.$this->model->id, $this->model_name);
+            debmes($exception->getMessage(), 'error', $this->model_name);
+
+            if(array_search('text/html', request()->getAcceptableContentTypes()) !== false || array_search('*/*', request()->getAcceptableContentTypes()) !== false) {
+                return view('errors.personal-code-error', [
+                    'exception' => $exception,
+                    'model' => $this->model,
+                ]);
+            } else {
+                return json_encode(['error' => true, 'msg' => 'Ошибка при выполнении кода!'], JSON_UNESCAPED_UNICODE);
+            }
+        }
+    }
+
+    public function delete()
+    {
+        if(config('laiot.place_to_save_code') == 'files') {
+            if(File::exists(storage_path('codes/'.$this->model_name.'/'.$this->model->id.'.laiot'))) {
+                File::delete(storage_path('codes/'.$this->model_name.'/'.$this->model->id.'.laiot'));
+            }
         }
     }
 }

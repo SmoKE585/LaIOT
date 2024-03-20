@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('property_linked', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('property_id')->index();
+            $table->foreignId('system_property_id')->constrained()->cascadeOnDelete();
             $table->string('module')->nullable();
             $table->string('source')->nullable();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('codes', function (Blueprint $table) {
             $table->id();
             $table->string('model_id')->unique();
             $table->longText('code');
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

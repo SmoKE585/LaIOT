@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Actions\FirstInstallAction;
-use App\Events\MQTTIncomingValue;
-use App\Listeners\MQTTIncomingValueProcessing;
+use App\Events\MQTTIncomingValueEvent;
+use App\Listeners\MQTTIncomingValueProcessingListener;
 use App\Models\Settings\Setting;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -20,8 +20,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        MQTTIncomingValue::class => [
-            MQTTIncomingValueProcessing::class,
+        MQTTIncomingValueEvent::class => [
+            MQTTIncomingValueProcessingListener::class,
         ],
     ];
 

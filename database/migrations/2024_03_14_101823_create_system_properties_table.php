@@ -11,21 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('system_properties', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('system_class_id')->index();
-            $table->foreign('system_class_id')->references('id')->on('system_classes');
-            $table->bigInteger('system_object_id')->index()->nullable();
-            $table->foreign('system_object_id')->references('id')->on('system_objects');
+            $table->foreignId('system_class_id')->constrained();
+            $table->foreignId('system_object_id')->nullable()->constrained();
             $table->bigInteger('title');
             $table->bigInteger('value')->nullable();
 
             $table->timestamps();
         });
-
-        Schema::enableForeignKeyConstraints();
     }
 
     /**

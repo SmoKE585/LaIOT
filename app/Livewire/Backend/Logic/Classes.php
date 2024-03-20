@@ -20,7 +20,7 @@ class Classes extends Component
     #[Computed]
     public function items()
     {
-        return SystemClass::orderBy('created_at', 'DESC')->where('parent_id', 0)->get();
+        return SystemClass::orderBy('created_at', 'DESC')->get();
     }
 
     public function render()

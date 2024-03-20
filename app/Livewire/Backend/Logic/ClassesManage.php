@@ -24,7 +24,6 @@ class ClassesManage extends Component
     {
         return [
             'data.id' => 'nullable|exists:system_classes,id',
-            'data.parent_id' => 'required|int|min:0',
             'data.title' => 'required|string|max:250|min:3|unique:system_classes,title',
             'data.description' => 'nullable|string|max:250|min:3',
         ];
@@ -35,12 +34,6 @@ class ClassesManage extends Component
         if(!is_null($id)) {
             $this->data = SystemClass::findOrFail($id)->toArray();
         }
-    }
-
-    #[Computed]
-    public function availableClasses()
-    {
-        return SystemClass::where('parent_id', 0)->orderBy('updated_at', 'DESC')->pluck('title', 'id');
     }
 
     public function save()
